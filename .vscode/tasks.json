@@ -20,6 +20,15 @@
       "presentation": {
         "reveal": "always"
       }
-    }
+    },
+        {
+          "label": "test",
+          "type": "shell",
+          "command": "pub run test *_test.dart",
+          "problemMatcher": [],
+          "presentation": {
+            "reveal": "always"
+          }
+        }
   ]
 }
