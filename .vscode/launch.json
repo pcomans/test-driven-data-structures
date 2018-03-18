@@ -4,12 +4,17 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
+    {
+      "name": "interview",
+      "program": "${workspaceRoot}/interview_questions_1.dart",
+      "request": "launch",
+      "type": "dart"
+    },
     {
       "name": "heap",
       "program": "${workspaceRoot}/heap.dart",
       "request": "launch",
-      "type": "dart-cli"
-    },
+      "type": "dart"
+    }
   ]
 }
