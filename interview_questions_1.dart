@@ -54,3 +54,40 @@ String urlify(String s, int length) {
 }
 
 List<int> _getSortedRuneList(String s) => s.runes.toList()..sort();
+
+bool isPalindromePermutation(String s) {
+  List<int> runes = s.toLowerCase().runes.toList(growable: false)..sort();
+  int spaceRune = " ".runes.first;
+
+  int previousRune = -1;
+  int cardinality = 0;
+  int unevenCardinalities = 0;
+
+  // A palindrome is a string where at most one character has a cardinality that's not divisible by 2.
+  for (int i = 0; i < runes.length; i++) {
+    int currentRune = runes[i];
+    if (currentRune == spaceRune) {
+      continue;
+    }
+
+    if (currentRune != previousRune) {
+      if (cardinality % 2 != 0) {
+        unevenCardinalities++;
+      }
+      cardinality = 1; // We've already seen a new character
+      previousRune = currentRune;
+    } else {
+      cardinality += 1;
+    }
+  }
+
+  if (cardinality % 2 != 0) {
+    unevenCardinalities++;
+  }
+
+  return (unevenCardinalities <= 1);
+}
+
+void main() {
+  isPalindromePermutation("Tact Coa");
+}

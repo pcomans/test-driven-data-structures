@@ -25,4 +25,12 @@ void main() {
     expect(urlify("A big hippo    ", 11), equals("A%20big%20hippo"));
     expect(urlify("hello  world    ", 12), equals("hello%20%20world"));
   });
+
+  test("palindrome", () {
+    expect(isPalindromePermutation("Tact Coa"), equals(true));
+    expect(isPalindromePermutation("A Santa at Nasa"), equals(true));
+    expect(isPalindromePermutation("A Nasa Santa"), equals(false));
+    expect(isPalindromePermutation("Anna"), equals(true));
+    expect(isPalindromePermutation("Ana"), equals(true));
+  });
 }
