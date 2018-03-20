@@ -63,4 +63,45 @@ void main() {
       expect(n.postOrder(), equals([1, 2, 7, 8, 3]));
     });
   });
+  group("Trie", () {
+    test("should store words", () {
+      Trie trie = new Trie();
+      String word1 = "the";
+      expect(trie.toString(), equals("null"));
+
+      expect(trie.contains(word1), equals(false));
+      trie.insert(word1);
+      expect(trie.toString(), equals("null: {t: {h: {e: {null}}}}"));
+      expect(trie.contains(word1), equals(true));
+
+      trie.insert(word1);
+      expect(trie.toString(), equals("null: {t: {h: {e: {null}}}}"));
+
+      String word2 = "a";
+      expect(trie.contains(word2), equals(false));
+      trie.insert(word2);
+      expect(trie.toString(), equals("null: {t: {h: {e: {null}}}, a: {null}}"));
+      expect(trie.contains(word2), equals(true));
+
+      String word3 = "there";
+      expect(trie.contains(word3), equals(false));
+      trie.insert(word3);
+      expect(trie.toString(),
+          equals("null: {t: {h: {e: {null, r: {e: {null}}}}}, a: {null}}"));
+      expect(trie.contains(word3), equals(true));
+      expect(trie.contains("ther"), equals(false));
+
+      List<String> words = [
+        "answer",
+        "any",
+        "by",
+        "bye",
+        "their",
+      ];
+
+      words.forEach((w) => trie.insert(w));
+      words.forEach((w) => expect(trie.contains(w), equals(true)));
+      print(trie);
+    });
+  });
 }
