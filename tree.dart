@@ -1,3 +1,5 @@
+import "stack.dart";
+
 abstract class ANode<T> {
   final T value;
   List<ANode<T>> _children = [];
@@ -28,25 +30,85 @@ class BNode<T> extends ANode<T> {
   void set right(BNode<T> node) => _children[1] = node;
 
   List<T> inOrder() {
+    Stack stack = new Stack<BNode<T>>();
     List<T> nodes = [];
-    nodes.addAll(left?.inOrder() ?? []);
+
+    BNode<T> current = this;
+    while (current != null || !stack.isEmpty()) {
+      if (current != null) {
+        stack.push(current);
+        current = current.left;
+      } else {
+        BNode<T> popped = stack.pop();
+        nodes.add(popped.value);
+        current = popped.right;
+      }
+    }
+    return nodes;
+  }
+
+  List<T> inOrderRec() {
+    List<T> nodes = [];
+    nodes.addAll(left?.inOrderRec() ?? []);
     nodes.add(value);
-    nodes.addAll(right?.inOrder() ?? []);
+    nodes.addAll(right?.inOrderRec() ?? []);
     return nodes;
   }
 
   List<T> preOrder() {
+    Stack stack = new Stack<BNode<T>>();
     List<T> nodes = [];
-    nodes.add(value);
-    nodes.addAll(left?.preOrder() ?? []);
-    nodes.addAll(right?.preOrder() ?? []);
+
+    stack.push(this);
+    while (!stack.isEmpty()) {
+      BNode<T> current = stack.pop();
+      nodes.add(current.value);
+      if (current.right != null) {
+        stack.push(current.right);
+      }
+      if (current.left != null) {
+        stack.push(current.left);
+      }
+    }
     return nodes;
   }
 
   List<T> postOrder() {
+    Stack stack = new Stack<BNode<T>>();
+    Stack reverse = new Stack<T>();
+
     List<T> nodes = [];
-    nodes.addAll(left?.postOrder() ?? []);
-    nodes.addAll(right?.postOrder() ?? []);
+
+    stack.push(this);
+    while (!stack.isEmpty()) {
+      BNode<T> current = stack.pop();
+      reverse.push(current.value);
+      if (current.left != null) {
+        stack.push(current.left);
+      }
+      if (current.right != null) {
+        stack.push(current.right);
+      }
+    }
+    while (!reverse.isEmpty()) {
+      nodes.add(reverse.pop());
+    }
+
+    return nodes;
+  }
+
+  List<T> preOrderRec() {
+    List<T> nodes = [];
+    nodes.add(value);
+    nodes.addAll(left?.preOrderRec() ?? []);
+    nodes.addAll(right?.preOrderRec() ?? []);
+    return nodes;
+  }
+
+  List<T> postOrderRec() {
+    List<T> nodes = [];
+    nodes.addAll(left?.postOrderRec() ?? []);
+    nodes.addAll(right?.postOrderRec() ?? []);
     nodes.add(value);
     return nodes;
   }

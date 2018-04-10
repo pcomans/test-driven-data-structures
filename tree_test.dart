@@ -51,6 +51,11 @@ void main() {
       BNode n = new BNode<int>(3);
       n.left = new BNode(7);
       n.right = new BNode(8);
+      // Recursive
+      expect(n.inOrderRec(), equals([7, 3, 8]));
+      expect(n.preOrderRec(), equals([3, 7, 8]));
+      expect(n.postOrderRec(), equals([7, 8, 3]));
+      // Iterative
       expect(n.inOrder(), equals([7, 3, 8]));
       expect(n.preOrder(), equals([3, 7, 8]));
       expect(n.postOrder(), equals([7, 8, 3]));
@@ -58,6 +63,11 @@ void main() {
       n.left.left = new BNode(1);
       n.left.right = new BNode(2);
 
+      // Recursive
+      expect(n.inOrderRec(), equals([1, 7, 2, 3, 8]));
+      expect(n.preOrderRec(), equals([3, 7, 1, 2, 8]));
+      expect(n.postOrderRec(), equals([1, 2, 7, 8, 3]));
+      // Iterative
       expect(n.inOrder(), equals([1, 7, 2, 3, 8]));
       expect(n.preOrder(), equals([3, 7, 1, 2, 8]));
       expect(n.postOrder(), equals([1, 2, 7, 8, 3]));
