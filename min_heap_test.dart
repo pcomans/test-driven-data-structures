@@ -17,17 +17,35 @@ void main() {
       expect(mh.size, equals(2));
       expect(mh.isEmpty(), equals(false));
     });
-    test("should return the smallest element", () {
+    test("peekMin should return the smallest element", () {
       MinHeap<int> mh = new MinHeap<int>();
       mh.insert(5);
       mh.insert(3);
-      // mh.insert(2);
-      // mh.insert(1);
-      // mh.insert(0);
-      // mh.insert(-1);
-      // mh.insert(-2);
-      // mh.insert(-3);
-      expect(mh.extractMin(), equals(3));
+      expect(mh.peekMin(), equals(3));
+      mh.insert(2);
+      mh.insert(1);
+      mh.insert(0);
+      mh.insert(-1);
+      mh.insert(-2);
+      mh.insert(-3);
+      expect(mh.peekMin(), equals(-3));
+      mh.insert(7);
+      expect(mh.peekMin(), equals(-3));
+    });
+    test("extractMin should return the smallest element", () {
+      MinHeap<int> mh = new MinHeap<int>();
+      mh.insert(5);
+      mh.insert(3);
+      // expect(mh.extractMin(), equals(3));
+      mh.insert(2);
+      mh.insert(1);
+      mh.insert(0);
+      mh.insert(-1);
+      mh.insert(-2);
+      mh.insert(-3);
+      expect(mh.extractMin(), equals(-3));
+      mh.insert(7);
+      expect(mh.extractMin(), equals(-3));
     });
   });
 }
