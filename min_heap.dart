@@ -70,23 +70,26 @@ class MinHeap<T extends Comparable> {
   T peekMin() => root.value;
 
   T extractMin() {
-    T returnValue = peekMin();
+    if (_nodeCount == 0) {
+      throw new EmptyHeapError();
+    }
 
-    if (_nodeCount == 1) {
-      root = null;
-    } else {
-      // get the rightmost element in the tree
+    T returnValue = peekMin();
+    if (_nodeCount > 1)  {
+      // Get the rightmost element in the tree
       List<int> binPath = _getPathToNode(_nodeCount);
       List<BNode<T>> nodesOnPath = _getNodesOnPath(binPath);
       BNode<T> rightmostNode = nodesOnPath.last;
 
       root.value = rightmostNode.value;
-      //delete the old rightmost node
+      // delete the old rightmost node by removing the reference to it
       if (binPath.last == 0) {
         nodesOnPath[binPath.length - 1].left = null;
       } else {
         nodesOnPath[binPath.length - 1].right = null;
       }
+
+      // Bubble down the root element to restore min heap ordering
       BNode<T> traversalNode = root;
       while (traversalNode != null) {
         BNode<T> left = traversalNode.left;
@@ -109,17 +112,27 @@ class MinHeap<T extends Comparable> {
         }
 
         if (smallestChild.value.compareTo(traversalNode.value) < 0) {
-          // bubble value down
+          // Bubble value down
           T temp = smallestChild.value;
           smallestChild.value = traversalNode.value;
           traversalNode.value = temp;
+          // Continue our walk down the tree
           traversalNode = smallestChild;
         } else {
+          // Min heap ordering is already fulfilled
           break;
         }
       }
+    } else {
+      root = null;
     }
+
     _nodeCount--;
     return returnValue;
   }
+}
+
+class EmptyHeapError extends Error {
+  @override
+  String toString() => "Heap is empty";
 }

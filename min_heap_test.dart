@@ -54,6 +54,13 @@ void main() {
       expect(mh.extractMin(), equals(5));
       expect(mh.extractMin(), equals(6));
       expect(mh.extractMin(), equals(7));
+      // I couldn't get throwsA to work.
+      try {
+        mh.extractMin();
+        expect(true, equals(false), reason: "Should throw EmptyHeapException");
+      } on EmptyHeapError catch (_) {
+        expect(true, equals(true));
+      }
     });
   });
 }
