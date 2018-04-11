@@ -1,7 +1,7 @@
 import "stack.dart";
 
 abstract class ANode<T> {
-  final T value;
+  T value;
   List<ANode<T>> _children = [];
 
   ANode(this.value, [int numChildren = 0]) {
