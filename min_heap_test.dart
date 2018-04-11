@@ -36,7 +36,7 @@ void main() {
       MinHeap<int> mh = new MinHeap<int>();
       mh.insert(5);
       mh.insert(3);
-      // expect(mh.extractMin(), equals(3));
+       expect(mh.extractMin(), equals(3));
       mh.insert(2);
       mh.insert(1);
       mh.insert(0);
@@ -45,7 +45,15 @@ void main() {
       mh.insert(-3);
       expect(mh.extractMin(), equals(-3));
       mh.insert(7);
-      expect(mh.extractMin(), equals(-3));
+      expect(mh.extractMin(), equals(-2));
+      expect(mh.extractMin(), equals(-1));
+      expect(mh.extractMin(), equals(-0));
+      mh.insert(6);
+      expect(mh.extractMin(), equals(1));
+      expect(mh.extractMin(), equals(2));
+      expect(mh.extractMin(), equals(5));
+      expect(mh.extractMin(), equals(6));
+      expect(mh.extractMin(), equals(7));
     });
   });
 }

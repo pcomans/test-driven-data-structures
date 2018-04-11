@@ -1,5 +1,4 @@
 import "tree.dart";
-import "dart:math";
 
 class MinHeap<T extends Comparable> {
   int _nodeCount = 0;
@@ -7,7 +6,7 @@ class MinHeap<T extends Comparable> {
   bool isEmpty() => size == 0;
   BNode<T> root;
 
-  _getPathToNode(int nodeIdx) {
+  List<int> _getPathToNode(int nodeIdx) {
     // Get the 1-based index of the new node in binary
     String binIdx = (nodeIdx).toRadixString(2);
 
@@ -17,13 +16,14 @@ class MinHeap<T extends Comparable> {
     return binIdx
         .substring(1)
         .split("")
-        .map<int>((s) => int.parse(s, radix: 2));
+        .map<int>((s) => int.parse(s, radix: 2))
+        .toList();
   }
 
   /// Get a list of all nodes on the binary path, including the first and last one.
-  _getNodesOnPath(List<int> binPath) {
+  List<BNode<T>> _getNodesOnPath(List<int> binPath) {
     BNode<T> current = root;
-    List<BNode> pathToNode = new List(binPath.length + 1);
+    List<BNode<T>> pathToNode = new List(binPath.length + 1);
     for (int i = 0; i < binPath.length; i++) {
       pathToNode[i] = current;
 
@@ -42,8 +42,8 @@ class MinHeap<T extends Comparable> {
     if (root == null) {
       root = new BNode(elem);
     } else {
-      Iterable<int> binPath = _getPathToNode(_nodeCount);
-      List<BNode> pathToNewNode = _getNodesOnPath(binPath.toList());
+      List<int> binPath = _getPathToNode(_nodeCount);
+      List<BNode> pathToNewNode = _getNodesOnPath(binPath);
 
       // The last element on the path is null, since the new node doesn't exist yet.
       BNode<T> newNode = new BNode(elem);
@@ -71,9 +71,55 @@ class MinHeap<T extends Comparable> {
 
   T extractMin() {
     T returnValue = peekMin();
-    // get the rightmost element in the tree
-    Iterable<int> binPath = _getPathToNode(_nodeCount);
-    print(binPath);
-    return null;
+
+    if (_nodeCount == 1) {
+      root = null;
+    } else {
+      // get the rightmost element in the tree
+      List<int> binPath = _getPathToNode(_nodeCount);
+      List<BNode<T>> nodesOnPath = _getNodesOnPath(binPath);
+      BNode<T> rightmostNode = nodesOnPath.last;
+
+      root.value = rightmostNode.value;
+      //delete the old rightmost node
+      if (binPath.last == 0) {
+        nodesOnPath[binPath.length - 1].left = null;
+      } else {
+        nodesOnPath[binPath.length - 1].right = null;
+      }
+      BNode<T> traversalNode = root;
+      while (traversalNode != null) {
+        BNode<T> left = traversalNode.left;
+        BNode<T> right = traversalNode.right;
+
+        BNode<T> smallestChild;
+        if (left != null && right != null) {
+          if (left.value.compareTo(right.value) < 0) {
+            smallestChild = left;
+          } else {
+            smallestChild = right;
+          }
+        } else if (left != null) {
+          smallestChild = left;
+        } else if (right != null) {
+          smallestChild = right;
+        } else {
+          //we reached a leaf.
+          break;
+        }
+
+        if (smallestChild.value.compareTo(traversalNode.value) < 0) {
+          // bubble value down
+          T temp = smallestChild.value;
+          smallestChild.value = traversalNode.value;
+          traversalNode.value = temp;
+          traversalNode = smallestChild;
+        } else {
+          break;
+        }
+      }
+    }
+    _nodeCount--;
+    return returnValue;
   }
 }
