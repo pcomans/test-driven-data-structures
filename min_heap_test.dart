@@ -36,7 +36,7 @@ void main() {
       MinHeap<int> mh = new MinHeap<int>();
       mh.insert(5);
       mh.insert(3);
-       expect(mh.extractMin(), equals(3));
+      expect(mh.extractMin(), equals(3));
       mh.insert(2);
       mh.insert(1);
       mh.insert(0);
